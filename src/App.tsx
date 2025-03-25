@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
+import TasksPage from "./pages/TasksPage";
 
 const HomePage = () => <div className="page">Home Page</div>;
-const TasksPage = () => <div className="page">Tasks Page</div>;
 const ProfilePage = () => <div className="page">Profile Page</div>;
 const SettingsPage = () => <div className="page">Settings Page</div>;
 
