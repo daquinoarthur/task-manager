@@ -56,10 +56,11 @@
 }
 
 .tag {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: #0055aa;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.8rem;
+  color: white;
 }
 
 .due-date {
@@ -69,4 +70,26 @@
 .task-actions {
   display: flex;
   justify-content: flex-end;
+}
+
+.no-tasks {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #676767;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.add-task-btn {
+  margin-bottom: 1.5rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: #f0f0f0;
+  color: #333333;
+  border: 2px dashed #cccccc;
+}
+
+.add-task-btn:hover {
+  background-color: #e8e8e8;
 }

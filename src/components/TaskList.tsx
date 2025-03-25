@@ -1,46 +1,48 @@
 import React, { useState } from "react";
-import { Task, TaskStatus, TaskPriority } from "../types";
+import { Task, TaskPriority, TaskStatus } from "../types";
 import TaskItem from "./TaskItem";
 import "./TaskList.css";
+import TaskForm from "./TaskForm";
 
 const initialTasks: Task[] = [
   {
     id: "1",
-    title: "Task Title 1",
-    description: "Task Description 1",
-    status: TaskStatus.COMPLETED,
-    priority: TaskPriority.MEDIUM,
+    title: "Learn React Hooks",
+    description: "Study all React hooks thoroughly",
+    status: TaskStatus.IN_PROGRESS,
+    priority: TaskPriority.HIGH,
     createdAt: new Date("2025-03-01"),
     updatedAt: new Date("2025-03-10"),
     dueDate: new Date("2025-03-25"),
-    tags: ["tag1", "tag2", "tag3"],
+    tags: ["learning", "react", "frontend"],
   },
   {
     id: "2",
-    title: "Task Title 2",
-    description: "Task Description 2",
-    status: TaskStatus.IN_PROGRESS,
-    priority: TaskPriority.HIGH,
+    title: "Set up project structure",
+    description: "Organize folders and files for better maintainability",
+    status: TaskStatus.COMPLETED,
+    priority: TaskPriority.MEDIUM,
     createdAt: new Date("2025-03-05"),
     updatedAt: new Date("2025-03-05"),
-    tags: ["tag2", "tag3", "tag4"],
+    tags: ["setup", "organization"],
   },
   {
     id: "3",
-    title: "Task Title 3",
-    description: "Task Description 3",
+    title: "Implement authentication",
+    description: "Add user login and registration functionality",
     status: TaskStatus.TODO,
-    priority: TaskPriority.LOW,
+    priority: TaskPriority.URGENT,
     createdAt: new Date("2025-03-12"),
     updatedAt: new Date("2025-03-12"),
     dueDate: new Date("2025-03-30"),
-    tags: ["tag3", "tag4", "tag5"],
+    tags: ["auth", "security", "user"],
   },
 ];
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [filter, setFilter] = useState<TaskStatus | "ALL">("ALL");
+  const [showForm, setShowForm] = useState<boolean>(false);
 
   const handleStatusChange = (id: string, newStatus: TaskStatus) => {
     setTasks((prevTasks) =>
@@ -50,6 +52,11 @@ const TaskList: React.FC = () => {
           : task,
       ),
     );
+  };
+
+  const handleAddTask = (newTask: Task) => {
+    setTasks((prevTasks) => [newTask, ...prevTasks]);
+    setShowForm(false);
   };
 
   const filteredTasks =
@@ -75,6 +82,18 @@ const TaskList: React.FC = () => {
           </select>
         </div>
       </div>
+
+      {showForm ? (
+        <TaskForm onTaskAdd={handleAddTask} />
+      ) : (
+        <button
+          className="btn btn-primary add-task-btn"
+          onClick={() => setShowForm(true)}
+        >
+          + Add New Task
+        </button>
+      )}
+
       <div className="tasks">
         {filteredTasks.length === 0 ? (
           <p className="no-tasks">No tasks match the selected filter.</p>
