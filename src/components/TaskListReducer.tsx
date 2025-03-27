@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { Task, TaskPriority, TaskStatus } from "../types";
 import TaskItem from "./TaskItem";
 import "./TaskList.css";
 import TaskForm from "./TaskForm";
+import {
+  initialTaskState,
+  TaskActionTypes,
+  taskReducer,
+} from "../reducers/taskReducer";
 
 const initialTasks: Task[] = [
   {
@@ -39,46 +44,57 @@ const initialTasks: Task[] = [
   },
 ];
 
-const TaskList: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
-  const [filter, setFilter] = useState<TaskStatus | "ALL">("ALL");
+const TaskListReduce: React.FC = () => {
+  const [taskState, dispatch] = useReducer(
+    taskReducer,
+    initialTaskState(initialTasks),
+  );
+
   const [showForm, setShowForm] = useState<boolean>(false);
 
   const handleStatusChange = (id: string, newStatus: TaskStatus) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id
-          ? { ...task, status: newStatus, updatedAt: new Date() }
-          : task,
-      ),
-    );
+    dispatch({
+      type: TaskActionTypes.CHANGE_STATUS,
+      payload: { id, status: newStatus },
+    });
   };
 
   const handleAddTask = (newTask: Task) => {
-    setTasks((prevTasks) => [newTask, ...prevTasks]);
-    setShowForm(false);
+    dispatch({
+      type: TaskActionTypes.ADD_TASK,
+      payload: newTask,
+    });
   };
 
   const handleDeleteTask = (id: string) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    setShowForm(false);
+    dispatch({
+      type: TaskActionTypes.DELETE_TASK,
+      payload: id,
+    });
   };
 
-  const filteredTasks =
-    filter === "ALL" ? tasks : tasks.filter((task) => task.status === filter);
+  const handleFilterChange = (filter: TaskStatus | "ALL") => {
+    dispatch({
+      type: TaskActionTypes.FILTER_TASKS,
+      payload: filter,
+    });
+  };
 
   return (
     <div className="task-list-container">
       <div className="task-list-header">
-        <h2>Tasks</h2>
+        <h2>Tasks (with useReducer)</h2>
         <div className="task-filters">
           <label htmlFor="status-filter">Filter by status:</label>
           <select
             id="status-filter"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as TaskStatus | "ALL")}
+            value={taskState.filter}
+            onChange={(e) =>
+              handleFilterChange(e.target.value as TaskStatus | "ALL")
+            }
             className="filter-select"
           >
+            <option value="ALL">ALL</option>
             {Object.values(TaskStatus).map((status) => (
               <option key={status} value={status}>
                 {status.replace("_", " ")}
@@ -100,10 +116,10 @@ const TaskList: React.FC = () => {
       )}
 
       <div className="tasks">
-        {filteredTasks.length === 0 ? (
-          <p className="no-tasks">No tasks match the selected filter.</p>
+        {taskState.filteredTasks.length === 0 ? (
+          <p className="no-tasks">No tasks match the selected filter</p>
         ) : (
-          filteredTasks.map((task) => (
+          taskState.filteredTasks.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
@@ -117,4 +133,4 @@ const TaskList: React.FC = () => {
   );
 };
 
-export default TaskList;
+export default TaskListReduce;

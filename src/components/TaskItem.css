@@ -70,6 +70,23 @@
 .task-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn .delete-btn {
+  background-color: transparent;
+  color: #e53935;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 0.75rem 0.5rem;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: rgba(229, 57, 53, 0.1);
 }
 
 .no-tasks {

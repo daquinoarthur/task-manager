@@ -6,9 +6,14 @@ import "./TaskItem.css";
 interface TaskItemProps {
   task: Task;
   onStatusChange: (id: string, newStatus: TaskStatus) => void;
+  onDelete: (id: string) => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task, onStatusChange }) => {
+const TaskItem: React.FC<TaskItemProps> = ({
+  task,
+  onStatusChange,
+  onDelete,
+}) => {
   // Status background colors
   const statusColors = {
     [TaskStatus.TODO]: "bg-gray-100",
@@ -31,7 +36,9 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onStatusChange }) => {
         <h3>{task.title}</h3>
         <span className="priority">{priorityIndicators[task.priority]}</span>
       </div>
+
       <p className="task-description">{task.description}</p>
+
       <div className="task-meta">
         <div className="task-tags">
           {task.tags.map((tag) => (
@@ -48,6 +55,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onStatusChange }) => {
           )}
         </div>
       </div>
+
       <div className="task-actions">
         <select
           value={task.status}
@@ -62,6 +70,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onStatusChange }) => {
             </option>
           ))}
         </select>
+
+        <button
+          className="btn btn-danger delete-btn"
+          onClick={() => onDelete(task.id)}
+          aria-label="Delete task"
+        >
+          x
+        </button>
       </div>
     </div>
   );

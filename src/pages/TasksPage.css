@@ -1,0 +1,34 @@
+.tasks-page h1 {
+  margin-bottom: 0.5rem;
+}
+
+.tasks-page p {
+  margin-bottom: 2rem;
+  color: #676767;
+}
+
+.implementation-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 1200px) {
+  .implementation-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.implementation {
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.implementation h2 {
+  margin-bottom: 1.5rem;
+  color: #333333;
+  border-bottom: 1px solid #eeeeee;
+  padding-bottom: 0.75rem;
+}
